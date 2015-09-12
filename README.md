@@ -1,4 +1,4 @@
-##	Duplicate seacher v.0.1.1
+##	Duplicate seacher v.0.1.2
 
 Search duplicates in all files in current directory.
 
@@ -7,6 +7,8 @@ Search duplicates in all files in current directory.
 Sequence of the option keys is not critical.
 
 12.09.2015 - Firts commit.
+
+13.09.2015 - Algorithm for finding duplicates has been optimized.
 
 Examples:
 ```

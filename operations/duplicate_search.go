@@ -10,7 +10,7 @@ import (
 
 func DoDuplicate2(files_list []string, new_file string) error {
 
-	m := map[string]bool{}
+	m := map[uint64]bool{}
 	readed := 0
 	added := 0
 
@@ -43,12 +43,13 @@ func DoDuplicate2(files_list []string, new_file string) error {
 
 		for scanner.Scan() {
 			line := scanner.Text()
+			line_hash := s.GetHashFvn64(line)
 
 			readed++
 
-			if _, seen := m[line]; !seen {
+			if _, seen := m[line_hash]; !seen {
 				fmt.Fprintln(writer, line)
-				m[line] = true
+				m[line_hash] = true
 				added++
 			}
 

@@ -14,7 +14,7 @@ func main() {
 	// variables
 	var new_file string = "Dict_New.dic"
 	var file_ext = ".dic"
-	var version = "0.1.1"
+	var version = "0.1.2"
 
 	// args
 	for k, arg := range os.Args {
