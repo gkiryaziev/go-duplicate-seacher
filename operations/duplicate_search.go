@@ -3,7 +3,9 @@ package operations
 import (
 	"bufio"
 	"fmt"
+	"github.com/cheggaaa/pb"
 	"os"
+	//"time"
 
 	s "../service"
 )
@@ -11,8 +13,8 @@ import (
 func DoDuplicate2(files_list []string, new_file string) error {
 
 	m := map[uint64]bool{}
-	readed := 0
-	added := 0
+	var readed int64 = 0
+	var added int64 = 0
 
 	out, err := os.Create(new_file)
 	if err != nil {
@@ -24,14 +26,10 @@ func DoDuplicate2(files_list []string, new_file string) error {
 
 	for _, src_file := range files_list {
 
-		counter := 0
-		percent := 0
 		total, err := s.CalculateLines(src_file)
 		if err != nil {
 			return err
 		}
-
-		fmt.Printf("\n%s processing: ", src_file)
 
 		in, err := os.Open(src_file)
 		if err != nil {
@@ -40,6 +38,16 @@ func DoDuplicate2(files_list []string, new_file string) error {
 		defer in.Close()
 
 		scanner := bufio.NewScanner(in)
+
+		// Progress Bar
+		bar := pb.New64(total)
+		bar.ShowPercent = true
+		bar.ShowBar = true
+		bar.ShowCounters = true
+		bar.ShowTimeLeft = true
+		//bar.SetRefreshRate(time.Millisecond * 100)
+		//bar.Format("<.- >")
+		bar.Start()
 
 		for scanner.Scan() {
 			line := scanner.Text()
@@ -52,14 +60,9 @@ func DoDuplicate2(files_list []string, new_file string) error {
 				m[line_hash] = true
 				added++
 			}
-
-			counter++
-			if counter == 100000 {
-				percent += counter
-				fmt.Printf("..%d%%", (percent * 100 / total))
-				counter = 0
-			}
+			bar.Increment()
 		}
+		bar.Finish()
 
 		if err := scanner.Err(); err != nil {
 			return err
@@ -70,11 +73,17 @@ func DoDuplicate2(files_list []string, new_file string) error {
 		return err
 	}
 
-	fmt.Println()
-	fmt.Println()
+	fmt.Println("\nProcessed files:")
+	fmt.Println("-------------------------------------------")
+	for _, src_file := range files_list {
+		fmt.Println(src_file)
+	}
+
+	fmt.Println("-------------------------------------------")
 	fmt.Printf("|%-20s|%20d|\n", "Readed", readed)
 	fmt.Printf("|%-20s|%20d|\n", "Removed", (readed - added))
 	fmt.Printf("|%-20s|%20d|\n", "Result", added)
+	fmt.Println("-------------------------------------------\n")
 
 	return nil
 }

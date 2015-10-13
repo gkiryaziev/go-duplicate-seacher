@@ -14,7 +14,7 @@ func main() {
 	// variables
 	var new_file string = "Dict_New.dic"
 	var file_ext = ".dic"
-	var version = "0.1.2"
+	var version = "0.1.4"
 
 	// args
 	for k, arg := range os.Args {
@@ -43,7 +43,7 @@ func main() {
 	s.CheckError(err)
 
 	fmt.Println()
-	fmt.Println(len(files_list), "files found.")
+	fmt.Println(len(files_list), "files found.\n")
 
 	err = o.DoDuplicate2(files_list, new_file)
 	s.CheckError(err)
