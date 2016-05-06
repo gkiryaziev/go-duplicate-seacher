@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	o "./operations"
-	s "./service"
+	o "github.com/gkiryaziev/go-duplicate-seacher/operations"
+	s "github.com/gkiryaziev/go-duplicate-seacher/service"
 )
 
 func main() {
@@ -45,7 +45,7 @@ func main() {
 	fmt.Println()
 	fmt.Println(len(files_list), "files found.\n")
 
-	err = o.DoDuplicate2(files_list, new_file)
+	err = o.DoDuplicate(files_list, new_file)
 	s.CheckError(err)
 
 	// elapsed time

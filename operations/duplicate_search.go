@@ -7,10 +7,11 @@ import (
 	"os"
 	//"time"
 
-	s "../service"
+	s "github.com/gkiryaziev/go-duplicate-seacher/service"
 )
 
-func DoDuplicate2(files_list []string, new_file string) error {
+// DoDuplicate search duplicates
+func DoDuplicate(files_list []string, new_file string) error {
 
 	m := map[uint64]bool{}
 	var readed int64 = 0

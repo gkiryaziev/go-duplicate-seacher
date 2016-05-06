@@ -1,4 +1,4 @@
-##	Duplicate seacher v.0.1.4
+##	Duplicate seacher v0.1.4
 
 Search duplicates in all files in current directory.
 
@@ -12,7 +12,17 @@ Sequence of the option keys is not critical.
 
 13.10.2015 - Changed algorithm and view for progress bar. Fixed calculation for strings in files.
 
-Examples:
+### Install:
 ```
-duplicate_seacher -ext dic -new Dict_New.dic
+go get github.com/gkiryaziev/go-duplicate-seacher
+```
+
+### Build and Run
+```
+go build && go-duplicate-seacher
+```
+
+### Usage:
+```
+go-duplicate-seacher -ext dic -new Dict_New.dic
 ```
