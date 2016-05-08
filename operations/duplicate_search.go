@@ -3,21 +3,22 @@ package operations
 import (
 	"bufio"
 	"fmt"
-	"github.com/cheggaaa/pb"
 	"os"
+
+	"github.com/cheggaaa/pb"
 	//"time"
 
 	s "github.com/gkiryaziev/go-duplicate-seacher/service"
 )
 
 // DoDuplicate search duplicates
-func DoDuplicate(files_list []string, new_file string) error {
+func DoDuplicate(filesList []string, newFile string) error {
 
 	m := map[uint64]bool{}
-	var readed int64 = 0
-	var added int64 = 0
+	readed := 0
+	added := 0
 
-	out, err := os.Create(new_file)
+	out, err := os.Create(newFile)
 	if err != nil {
 		return err
 	}
@@ -25,14 +26,14 @@ func DoDuplicate(files_list []string, new_file string) error {
 
 	writer := bufio.NewWriter(out)
 
-	for _, src_file := range files_list {
+	for _, srcFile := range filesList {
 
-		total, err := s.CalculateLines(src_file)
+		total, err := s.CalculateLines(srcFile)
 		if err != nil {
 			return err
 		}
 
-		in, err := os.Open(src_file)
+		in, err := os.Open(srcFile)
 		if err != nil {
 			return err
 		}
@@ -52,13 +53,13 @@ func DoDuplicate(files_list []string, new_file string) error {
 
 		for scanner.Scan() {
 			line := scanner.Text()
-			line_hash := s.GetHashFvn64(line)
+			lineHash := s.GetHashFvn64(line)
 
 			readed++
 
-			if _, seen := m[line_hash]; !seen {
+			if _, seen := m[lineHash]; !seen {
 				fmt.Fprintln(writer, line)
-				m[line_hash] = true
+				m[lineHash] = true
 				added++
 			}
 			bar.Increment()
@@ -76,15 +77,16 @@ func DoDuplicate(files_list []string, new_file string) error {
 
 	fmt.Println("\nProcessed files:")
 	fmt.Println("-------------------------------------------")
-	for _, src_file := range files_list {
-		fmt.Println(src_file)
+	for _, srcFile := range filesList {
+		fmt.Println(srcFile)
 	}
 
 	fmt.Println("-------------------------------------------")
 	fmt.Printf("|%-20s|%20d|\n", "Readed", readed)
 	fmt.Printf("|%-20s|%20d|\n", "Removed", (readed - added))
 	fmt.Printf("|%-20s|%20d|\n", "Result", added)
-	fmt.Println("-------------------------------------------\n")
+	fmt.Println("-------------------------------------------")
+	fmt.Println()
 
 	return nil
 }
